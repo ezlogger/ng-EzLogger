@@ -1,6 +1,6 @@
 {
   "name": "ng-ez-logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "angular",
     "logging",
@@ -10,7 +10,7 @@
     "ng",
     "log"
   ],
-  "readmeFilename" : "README.md",
+  "readmeFilename": "README.md",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
