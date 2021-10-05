@@ -10,6 +10,7 @@
     "ng",
     "log"
   ],
+  "readmeFilename" : "README.md",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
