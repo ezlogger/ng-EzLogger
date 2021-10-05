@@ -1,7 +1,15 @@
 {
   "name": "ng-ez-logger",
-  "version": "0.0.0",
-  "keywords" : ["angular", "logging", "logs", "logger", "logging library","ng","log"],
+  "version": "1.0.0",
+  "keywords": [
+    "angular",
+    "logging",
+    "logs",
+    "logger",
+    "logging library",
+    "ng",
+    "log"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
