@@ -1,27 +1,113 @@
-# NgEzLogger
+# Ng-EzLogger
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.2.
+NG-EzLogger is a logging library designed to simplify logging in angular to be simple as it can. The main intention of this library is to simplify logging while also keeping your code clean and readable.
 
-## Development server
+## Installation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+ ```shell
+npm i ng-ez-logger
+```
+Once installed you need to import our main module in your app module 
 
-## Code scaffolding
+```typescript
+import {LoggingModule } from "ng-ez-logger";
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Afterwards you'll need to add the configuration for the module, you will get to decide the log type between "Server" or "Console"
 
-## Build
+```typescript
+imports :[
+ LoggingModule.forRoot(
+      {logMethod:"Server",serverUrl:'https://localhost:44312/api/Logger',
+       })
+  ],
+  ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Configuration Options 
 
-## Running unit tests
+- `logMethod` {String}: Choose between `Console` or `Server`. Defaults to `Console`. This is a mandatory config option
+- `serverUrl` {String}: Mandatory only if `Server` log method is selected.Enter URL for server side logging here.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Usage
+ 
+ This library has different tools used to simplify logging, Starting with our Log decorator
 
-## Running end-to-end tests
+ ```typescript
+ import {LogDecorator} from "ng-ez-logger";
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+ @LogDecorator()
 
-## Further help
+  SampleMethod()
+  {  
+    .... 
+  }
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  ```
+  Simply putting the decorator above a method would add Info log entries at the start and at the end of each method. In the case of a asynchronous function existing in the method. You can use our custom Log RXJS operator to log when the subscription is over.
+
+```typescript
+import {LogDecorator,log} from "ng-ez-logger";
+
+ @LogDecorator()
+
+  SampleMethod()
+  {  
+     this.httpService.get(URL).pipe(log("/Type Method Name here")).subscribe(res=>{
+      console.log(res);
+   })
+  }
+  ```
+
+If you want the exit log for the method to be only printed when the subscription is done, you can simply pass true as a variable to the LogDecorator
+
+
+```typescript
+ import {LogDecorator,log} from "ng-ez-logger";
+
+ @LogDecorator(true)
+
+  SampleMethod()
+  {  
+     this.httpService.get(URL).pipe(log("/Type Method Name here")).subscribe(res=>{
+      console.log(res);
+   })
+  }
+  ```
+
+  As for the error logging, our library has a global error handler to catch any error that occurs in the application automatically. Therefore you we have removed the need for any manual error logs.
+
+  If you want to add any custom logs at different places, you can simply import our logging service and utilize the Warn,Info,Error methods as needed.  
+
+  ```typescript
+  import {LoggingService} from "ng-ez-logger";
+
+  constructor(private loggingService: LoggingService)
+
+  SampleMethod()
+  {  
+     this.loggingService.warn("/Warn Message");
+     this.loggingService.info("/Info Message");
+     this.loggingService.error("/Error Message");
+  }
+  ```
+
+  ## Server Logging
+
+  If you are planning to do server side logging , we have a ready made environment available to do so. It includes an API as well as an application to view the logs being added. Please go to the following github repo for instructions on how to setup our environment.
+
+  https://github.com/ezlogger/EzLogger-Setup
+
+  Incase you are intending on using your own API for development. This is the log model our library handles currently. 
+
+  ```typescript
+
+  class LogModel {
+    message: string ;
+    type : string ;
+    logTime : Date ;
+   }
+
+  ```
+
+
+
